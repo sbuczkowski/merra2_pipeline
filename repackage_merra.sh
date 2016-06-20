@@ -5,6 +5,8 @@ for day in {01..31}; do
 
     echo "  Processing levels data..."
     ncks -v T,QV,QL,QI,O3,CLOUD MERRA2_400.tavg3_3d_asm_Nv.201407${day}.nc4 -o merra2_201407${day}_levels.nc4
+    echo "    Renaming levels variables to match ERA..."
+    ncrename -h -O -v T,t -v QV,q -v O3,o3 -v QL,clwc -v QI,ciwc -v CLOUD,cc merra2_201407${day}_levels.nc4
 
     echo "  Processing surface data..."
     echo "    Extracting variables..."
@@ -18,6 +20,9 @@ for day in {01..31}; do
 
     echo "    Removing temporary files..."
     rm frseaice.nc4 cldtot.nc4
+
+    echo "    Renaming surface variables to match ERA..."
+    ncrename -h -O -v FRSEAICE,ci -v PS,sp -v CLDTOT,tcc -v U10M,u10m -v V10M,v10m -vTS,skt merra2_201407${day}_surface.nc4
     
     echo "Day $day done"
 done
