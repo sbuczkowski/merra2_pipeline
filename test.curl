@@ -1,4 +1,0 @@
-url=https://goldsmr5.gesdisc.eosdis.nasa.gov:443/opendap/MERRA2/M2I3NVAER.5.12.4/2016/01/MERRA2_400.inst3_3d_aer_Nv.20160118.nc4
-output=/home/sbuczko1/WorkingFiles/MERRA-2/2016/01/Orig/MERRA2_400.inst3_3d_aer_Nv.20160118.nc4
-url=https://goldsmr5.gesdisc.eosdis.nasa.gov:443/opendap/MERRA2/M2I3NVCHM.5.12.4/2016/01/MERRA2_400.inst3_3d_chm_Nv.20160101.nc4
-output=/home/sbuczko1/WorkingFiles/MERRA-2/2016/01/Orig/MERRA2_400.inst3_3d_chm_Nv.20160118.nc4
