@@ -13,7 +13,8 @@ year=$1
 month=$2
 day=$3
 
-BASEDIR="/umbc/isilon/rs/strow/asl/merra2/incoming"
+# BASEDIR="/umbc/isilon/rs/strow/asl/merra2/incoming"
+BASEDIR="/umbc/xfs3/strow/asl/merra2/incoming"
 if [[ ! -d $BASEDIR ]]; then
     mkdir -p $BASEDIR
 fi
@@ -44,17 +45,17 @@ fi
 # solution will likely require getting NASA Goddard to repackage
 # MERRA2 and develop a more flexible query system.
 echo "Grabbing surface asm file for ${year}/${month}/${day}"
-wget --directory-prefix=$BASEDIR ${SURFURL}/M2I1NXASM.5.12.4/${year}/${month}/MERRA2_${VERS}.inst1_2d_asm_Nx.${year}${month}${day}.nc4
+wget -nv --directory-prefix=$BASEDIR ${SURFURL}/M2I1NXASM.5.12.4/${year}/${month}/MERRA2_${VERS}.inst1_2d_asm_Nx.${year}${month}${day}.nc4
 echo "Grabbing surface rad file for ${year}/${month}/${day}"
-wget --directory-prefix=$BASEDIR ${SURFURL}/M2T1NXRAD.5.12.4/${year}/${month}/MERRA2_${VERS}.tavg1_2d_rad_Nx.${year}${month}${day}.nc4
+wget -nv --directory-prefix=$BASEDIR ${SURFURL}/M2T1NXRAD.5.12.4/${year}/${month}/MERRA2_${VERS}.tavg1_2d_rad_Nx.${year}${month}${day}.nc4
 echo "Grabbing surface flx file for ${year}/${month}/${day}"
-wget --directory-prefix=$BASEDIR ${SURFURL}/M2T1NXFLX.5.12.4/${year}/${month}/MERRA2_${VERS}.tavg1_2d_flx_Nx.${year}${month}${day}.nc4
+wget -nv --directory-prefix=$BASEDIR ${SURFURL}/M2T1NXFLX.5.12.4/${year}/${month}/MERRA2_${VERS}.tavg1_2d_flx_Nx.${year}${month}${day}.nc4
 echo "Grabbing levels asm file for ${year}/${month}/${day}"
-wget --directory-prefix=$BASEDIR ${LEVURL}/M2I3NVASM.5.12.4/${year}/${month}/MERRA2_${VERS}.inst3_3d_asm_Nv.${year}${month}${day}.nc4
+wget -nv --directory-prefix=$BASEDIR ${LEVURL}/M2I3NVASM.5.12.4/${year}/${month}/MERRA2_${VERS}.inst3_3d_asm_Nv.${year}${month}${day}.nc4
 
 echo "Grabbing levels aer (SO2) file for ${year}/${month}/${day}"
-wget --directory-prefix=$BASEDIR ${LEVURL}/M2I3NVAER.5.12.4/${year}/${month}/MERRA2_${VERS}.inst3_3d_aer_Nv.${year}${month}${day}.nc4
+wget -nv --directory-prefix=$BASEDIR ${LEVURL}/M2I3NVAER.5.12.4/${year}/${month}/MERRA2_${VERS}.inst3_3d_aer_Nv.${year}${month}${day}.nc4
 echo "Grabbing levels chm (CO) file for ${year}/${month}/${day}"
-wget --directory-prefix=$BASEDIR ${LEVURL}/M2I3NVCHM.5.12.4/${year}/${month}/MERRA2_${VERS}.inst3_3d_chm_Nv.${year}${month}${day}.nc4
+wget -nv --directory-prefix=$BASEDIR ${LEVURL}/M2I3NVCHM.5.12.4/${year}/${month}/MERRA2_${VERS}.inst3_3d_chm_Nv.${year}${month}${day}.nc4
 
 

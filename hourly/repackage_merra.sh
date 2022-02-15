@@ -1,10 +1,16 @@
  #!/bin/bash
 
+# make sure module versions of netcdf/hdf support are compatible
+module -q load HDF5/1.10.1-intel-2018a
+module -q load netCDF/4.6.0-intel-2018a
+module -q load NCO/4.7.6-intel-2018a
+
 year=$1
 month=$2
 day=$3
 
-BASEDIR="/umbc/isilon/rs/strow/asl/merra2/incoming"
+#BASEDIR="/umbc/isilon/rs/strow/asl/merra2/incoming"
+BASEDIR="/umbc/xfs3/strow/asl/merra2/incoming"
 
 # NOTE: part of the process here is to rename variables and dimensions
 # in the MERRA namespace to replicate those in the ERA

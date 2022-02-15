@@ -6,8 +6,10 @@ day=$3
 
 tstamp=${year}${month}${day}
 
-BASEDIR="/umbc/isilon/rs/strow/asl/merra2/incoming"
-OUTDIR="/umbc/isilon/rs/strow/asl/merra2/${year}/${month}"
+#BASEDIR="/umbc/isilon/rs/strow/asl/merra2/incoming"
+BASEDIR="/umbc/xfs3/strow/asl/merra2/incoming"
+#OUTDIR="/umbc/isilon/rs/strow/asl/merra2/${year}/${month}"
+OUTDIR="/umbc/xfs3/strow/asl/merra2/${year}/${month}"
 
 # check for existence of output merra directory
 if [ ! -d $OUTDIR ]; then
