@@ -8,6 +8,7 @@ module -q load NCO/4.7.6-intel-2018a
 
 year=$1
 month=$2
+VERS=$3
 
 BASEDIR="/umbc/xfs3/strow/asl/merra2_monthly"
 INCOMING=$BASEDIR/incoming
