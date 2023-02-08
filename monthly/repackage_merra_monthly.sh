@@ -1,10 +1,7 @@
  #!/bin/bash
 
-# make sure module versions of netcdf/hdf support are compatible
-module -q load HDF/4.2.14-GCCcore-7.3.0
-module -q load HDF5/1.10.2-intel-2018b
-module -q load netCDF/4.6.0-intel-2018a
-module -q load NCO/4.7.6-intel-2018a
+# currently hoping that baseline module environment does not break
+# netCDF/HDF/NCO
 
 year=$1
 month=$2
@@ -70,7 +67,7 @@ nccopy -u -d9 $SURFACEFILE ${SURFACEFILE}.compressed
 echo "    Removing temporary files..."
 rm $INCOMING/{frseaice,cldtot}.nc4 $SURFACEFILE
 
-rm $INCOMING/MERRA2_*.nc4
+rm $INCOMING/MERRA2_${VERS}.*.${year}${month}.nc4
 
 echo "${year}/${month} repackaged"
 
