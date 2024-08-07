@@ -8,7 +8,7 @@ month=$2
 VERS=$3
 
 BASEDIR="/umbc/xfs3/strow/asl/merra2_monthly"
-INCOMING=$BASEDIR/incoming
+INCOMING=$BASEDIR/INCOMING
 
 # NOTE: part of the process here is to rename variables and dimensions
 # in the MERRA namespace to replicate those in the ERA

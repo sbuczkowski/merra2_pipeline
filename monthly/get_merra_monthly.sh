@@ -14,7 +14,7 @@ month=$2
 VERS=$3
 
 # BASEDIR="/umbc/isilon/rs/strow/asl/merra2/incoming"
-BASEDIR="/umbc/xfs3/strow/asl/merra2_monthly/incoming"
+BASEDIR="/umbc/xfs3/strow/asl/merra2_monthly/INCOMING"
 if [[ ! -d $BASEDIR ]]; then
     mkdir -p $BASEDIR
 fi

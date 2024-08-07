@@ -6,7 +6,7 @@ month=$2
 tstamp=${year}${month}
 
 BASEDIR="/umbc/xfs3/strow/asl/merra2_monthly"
-INCOMING="$BASEDIR/incoming"
+INCOMING="$BASEDIR/INCOMING"
 OUTDIR="$BASEDIR/$year"
 
 # check for existence of output merra directory
