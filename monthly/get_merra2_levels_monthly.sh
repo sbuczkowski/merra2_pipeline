@@ -46,14 +46,6 @@ fi
 # MERRA2 and develop a more flexible query system.
 BOILERPLATE="-nv --load-cookies ${HOME}/.urs_cookies --save-cookies ${HOME}/.urs_cookies --auth-no-challenge=on --keep-session-cookies"
 
-echo -e "\n** Grabbing surface files for ${year}/${month}/${day} **\n"
-echo "--> surface asm file" 
-wget $BOILERPLATE --directory-prefix=$BASEDIR ${SURFURL}/M2IMNXASM.5.12.4/${year}/MERRA2_${VERS}.instM_2d_asm_Nx.${year}${month}.nc4
-echo "--> surface rad file"
-wget $BOILERPLATE --directory-prefix=$BASEDIR ${SURFURL}/M2TMNXRAD.5.12.4/${year}/MERRA2_${VERS}.tavgM_2d_rad_Nx.${year}${month}.nc4
-echo "--> surface flx file"
-wget $BOILERPLATE --directory-prefix=$BASEDIR ${SURFURL}/M2TMNXFLX.5.12.4/${year}/MERRA2_${VERS}.tavgM_2d_flx_Nx.${year}${month}.nc4
-
 echo -e "\n** Grabbing levels files for ${year}/${month}/${day} **\n"
 echo "--> levels asm file"
 wget $BOILERPLATE --directory-prefix=$BASEDIR ${LEVURL}/M2IMNPASM.5.12.4/${year}/MERRA2_${VERS}.instM_3d_asm_Np.${year}${month}.nc4

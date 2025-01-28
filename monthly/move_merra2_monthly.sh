@@ -11,7 +11,7 @@ OUTDIR="$BASEDIR/$year"
 
 # check for existence of output merra directory
 if [ ! -d $OUTDIR ]; then
-    echo "$OUTDIR does not exist. creating."
+    echo "**>$OUTDIR does not exist. creating."
     mkdir -p $OUTDIR
 fi
 
