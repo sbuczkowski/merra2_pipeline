@@ -1,23 +1,32 @@
 #!/bin/bash
 
-year=$1
-month=$2
+# move repackaged files from INCOMING to their respective YEAR
+# directories in the archive
 
-tstamp=${year}${month}
+YEAR=$1
+MONTH=$2
 
-BASEDIR="/umbc/xfs3/strow/asl/merra2_monthly"
+TSTAMP=${YEAR}${MONTH}
+
+BASEDIR="/asl/models/merra2_monthly"
 INCOMING="$BASEDIR/INCOMING"
-OUTDIR="$BASEDIR/$year"
+OUTDIR="$BASEDIR/$YEAR"
 
+echo -e "\n*** Moving repackaged files to archive"
 # check for existence of output merra directory
 if [ ! -d $OUTDIR ]; then
-    echo "**>$OUTDIR does not exist. creating."
+    echo "\t *** $OUTDIR does not exist. creating. ***"
     mkdir -p $OUTDIR
 fi
 
 # move and rename the levels and surface files
-mv $INCOMING/merra2_${tstamp}_levels.nc4.compressed $OUTDIR/merra2_${tstamp}_lev.nc
-mv $INCOMING/merra2_${tstamp}_surface.nc4.compressed $OUTDIR/merra2_${tstamp}_sfc.nc
+OFILE=$OUTDIR/merra2_${TSTAMP}_lev.nc
+echo "--> Moving levels file to $OFILE"
+mv $INCOMING/merra2_${TSTAMP}_levels.nc4.compressed $OFILE
+
+OFILE=$OUTDIR/merra2_${TSTAMP}_sfc.nc
+echo "--> Moving surface file to $OFILE"
+mv $INCOMING/merra2_${TSTAMP}_surface.nc4.compressed $OFILE
 
 
 	

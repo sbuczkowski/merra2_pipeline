@@ -1,13 +1,14 @@
 #!/bin/bash
 
-year=$1
-month=$2
+# Delete all MERRA2 base netcdf files and local processing
+# intermediate netcdf files. 
+
+# NOTE: this is not targeted, it just wipes any and all nc4 files in
+# the INCOMING directory.
 
 BASEDIR="/asl/models/merra2_monthly"
 INCOMING=$BASEDIR/INCOMING
 
-tstamp=${year}${month}
-
-echo "**> Removing remaining nc4 files"
+echo "*** Removing remaining nc4 files"
 rm $INCOMING/*.nc4
 

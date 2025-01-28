@@ -1,0 +1,114 @@
+* Operating environment
+The scripts here have some HPC module dependencies:
+
+    - wget   (should be in base login env)
+    - lftp   (should be in base login env)
+    - NCO    (NCO/4.9.7-foss-2020b/ used for testing)
+    - netCDF (netCDF/4.7.4-gompi-2020b used for testing)
+
+* Earthdata login
+*NOTE* One must have a valid NASA Earthdata login set up in a valid
+~/.netrc file in order for this script to access data.
+
+* merra2_monthly_buildYear.sh/
+  └── merra2_monthly_buildMonth.sh
+      ├── merra2_monthly_getMonth.sh
+      │   ├── download_merra2_monthly_surface.sh
+      │   │   └── merra2_monthly_downloadFile.sh
+      │   └── download_merra2_monthly_levels.sh
+      │       └── merra2_monthly_downloadFile.sh
+      ├── merra2_monthly_repackMonth.sh
+      │   ├── repackage_merra2_monthly_surface.sh
+      │   └── repackage_merra2_monthly_levels.sh
+      ├── move_merra2_monthly.sh
+      └── clean_merra2_monthly.sh
+
+* Usage
+  - Build a month of MERRA2 monthly (takes <1 minute)
+    ./merra2_monthly_buildMonth.sh YYYY MM
+
+  - Build a year of MERRA2 monthly (takes <15 minutes)
+    ./merra2_monthly_buildYear.sh YYYY
+
+  - Rebuild entire archive (takes a few hours)
+    for year in {2002..2024}; do
+      ./merra2_monthly_buildYear.sh $year
+    done
+    ./merra2_monthly_buildMonth.sh 2025 01
+
+* NOTE OF SOME IMPORTANCE
+Should one want to add new variables to the archive:
+ - if the new variables come from one of these MERRA2 datasets:
+   - M2IMNPASM
+   - M2TMNPCLD
+   - M2IMNXASM
+   - M2TMNXRAD
+   - M2TMNXFLX
+   one must modify the repackage_merra2_monthly_* scripts described below
+   to add support for the new variables
+
+ - if the new variables come from datasets NOT in the above list,
+   support will need to be added to the download_merra2_monthly_*.sh,
+   merra2_monthly_downloadFile.sh, and repackage_merra2_monthly_*.sh
+   scripts
+
+* ANOTHER NOTE OF SOME IMPORTANCE
+Because of the use of netcdf compression on the final files placed in
+the archive, it is problematic to write a utility to add additional
+variables to the existing archive. If one wants to add variables to
+the archive, it is simpler to edit the relevant scripts to support the
+new variables and then rebuild the entire archive as illustrated in
+"Usage" above.
+
+* merra2_monthly_downloadFile.sh 
+The download workhorse. This and the two repackage_* routines are the
+main routines for merra2 monthly production. Everything else is pretty
+much wrapper functions.
+
+merra2_monthly_downloadFile.sh -{L/S} "merrakey" YEAR MONTH
+     -L signifies levels download where "merrakey" is one of {asm,cld}
+     -S signifies surface download where "merrakey" is one of {asm,rad,flx}
+
+If new variables are desired that require bringing down files not in
+that set, this routine will need to modified to add options for them.
+
+* repackage_merra2_monthly_*.sh
+Once MERRA2 files are in-hand, the variables required need to be
+extracted, renamed, stuffed into a new, single output file and
+compressed. That is done in these routines. Like downloadFile above,
+if new variables are added to the archive, these routines need to be
+modified to deal with them.
+
+These routines require the NCO module be loaded on the cluster for
+access to ncks and ncrename and the netCDF module be loaded for nccopy
+
+* Archive structure
+THe MERRA2 monthly archive is based in the HPC filesystem at
+/asl/model/merra_monthly (physically based
+/umbc/xfs3/strow/asl/merra2_monthly/).
+
+Currently, the archive enjoys a continguous existence on xfs3. Should
+that need to change for future space considerations, my suggestion
+(echoing Howard's suggestions) is to break the archive down on year
+boundaries and symlink in other disk systems using a duplicate path
+structure.
+
+In other words: suppose one needs to move some merra2_monthly data to
+isilon for space reasons. Let's say one wants to move 2024, 2025, and
+the INCOMING directories from xfs3 to isilon. Build a tree on isilon
+that duplicates the /asl/models/merra2_monthly tree to store the
+directories to move
+
+i.e. /umbc/isilon/rs/strow/asl/models/merra2_monthly/{2024,2025,INCOMING}
+
+NOTE: this may be partly mkdir and partly mv-ing directories already
+containing data
+
+Symlink these directories back into
+/asl/models/merra2_monthly/{2024,2025,INCOMING}
+
+and go about your day.
+
+The download script keys off the /asl/models/merra2_monthly/{YYYY,
+INCOMING} paths and does not require editing if the symlinks elsewhere
+in the system point to this tree.
