@@ -10,7 +10,7 @@ The scripts here have some HPC module dependencies:
 *NOTE* One must have a valid NASA Earthdata login set up in a valid
 ~/.netrc file in order for this script to access data.
 
-* merra2_hourly_buildYear.sh/ | merra2_hourly_buildMonth.sh
+* merra2_hourly_buildYear.sh | merra2_hourly_buildMonth.sh
   └── merra2_hourly_buildDay.sh
       ├── merra2_hourly_getDay.sh
       │   ├── download_merra2_hourly_surface.sh
@@ -47,9 +47,9 @@ The scripts here have some HPC module dependencies:
 
     - needs ~12TB diskspace
 
-  - *NOTE* building a month or a year /could/ be parallelized on
-    either strowinteract or HPC (Part odf the rationale for the
-    modular design...) for time savings.
+  - *NOTE* building a month or a year /could/ be easily parallelized
+    on either strowinteract or HPC for time savings. This was part of
+    the rationale for the modular design...
 
 * NOTE
 The hourly download scripts have been updated to match the style of
