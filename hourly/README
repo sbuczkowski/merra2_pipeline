@@ -1,0 +1,144 @@
+* Operating environment
+The scripts here have some HPC module dependencies:
+
+    - wget   (should be in base login env)
+    - lftp   (should be in base login env)
+    - NCO    (NCO/4.9.7-foss-2020b/ used for testing)
+    - netCDF (netCDF/4.7.4-gompi-2020b used for testing)
+
+* Earthdata login
+*NOTE* One must have a valid NASA Earthdata login set up in a valid
+~/.netrc file in order for this script to access data.
+
+* merra2_hourly_buildYear.sh/ | merra2_hourly_buildMonth.sh
+  └── merra2_hourly_buildDay.sh
+      ├── merra2_hourly_getDay.sh
+      │   ├── download_merra2_hourly_surface.sh
+      │   │   └── merra2_hourly_downloadFile.sh
+      │   └── download_merra2_hourly_levels.sh
+      │       └── merra2_hourly_downloadFile.sh
+      ├── merra2_hourly_repackDay.sh
+      │   ├── repackage_merra2_hourly_surface.sh
+      │   └── repackage_merra2_hourly_levels.sh
+      ├── move_merra2_hourly.sh
+      └── clean_merra2_hourly.sh
+
+* Usage
+  - Build a day of MERRA2 hourly (takes ~10 minutes)
+    ./merra2_hourly_buildDay.sh YYYY MM DD
+
+    - needs ~1.5GB diskspace 
+
+  - Build a month of MERRA2 hourly (takes ~6hrs)
+    ./merra2_hourly_buildMonth.sh YYYY MM
+
+    - needs ~42GB diskspace
+
+  - Build a year of MERRA2 hourly (probably takes ~3 days)
+    ./merra2_hourly_buildYear.sh YYYY
+
+    - needs ~540GB diskspace
+
+  - Rebuild entire archive (probably takes ~2 months)
+    for year in {2002..2024}; do
+      ./merra2_hourly_buildYear.sh $year
+    done
+    ./merra2_hourly_buildMonth.sh 2025 01
+
+    - needs ~12TB diskspace
+
+  - *NOTE* building a month or a year /could/ be parallelized on
+    either strowinteract or HPC (Part odf the rationale for the
+    modular design...) for time savings.
+
+* NOTE
+The hourly download scripts have been updated to match the style of
+the more often used monthly scripts BUT they have not been updated to
+include the longwave variables recently added to the monthly archive
+and future pulls. The current scripts match ASL variable content in
+ECMWF/ERA. Should one wish to build out a MERRA2 hourly archive which
+includes longwave variables, one must figure out what variables are
+available in the hourly archive (probably same/similar as in the
+monthly), what MERRA2 products they come from (may or may not be
+hourly equivalent to thhose used in monthly), and modify the
+downloadFile and repackage scripts to support their collection. Which
+brings us to:
+
+* NOTE OF SOME IMPORTANCE
+Should one want to add new variables to the archive:
+ - if the new variables come from one of these MERRA2 datasets:
+    - M2I3NVASM
+    - M2I3NVAER
+    - M2I3NVCHM
+    - M2I1NXASM
+    - M2T1NXRAD
+    - M2T1NXFLX
+
+   one must modify the repackage_merra2_hourly_* scripts described below
+   to add support for the new variables
+
+ - if the new variables come from datasets NOT in the above list,
+   support will need to be added to the download_merra2_hourly_*.sh,
+   merra2_hourly_downloadFile.sh, and repackage_merra2_hourly_*.sh
+   scripts
+
+* ANOTHER NOTE OF SOME IMPORTANCE
+Because of the use of netcdf compression on the final files placed in
+the archive, it is problematic to write a utility to add additional
+variables to the existing archive. If one wants to add variables to
+the archive, it is simpler to edit the relevant scripts to support the
+new variables and then rebuild the entire archive as illustrated in
+"Usage" above.
+
+* merra2_hourly_downloadFile.sh 
+The download workhorse. This and the two repackage_* routines are the
+main routines for merra2 hourly production. Everything else is pretty
+much wrapper functions.
+
+merra2_hourly_downloadFile.sh -{L/S} "merrakey" YEAR MONTH
+     -L signifies levels download where "merrakey" is one of {asm,cld}
+     -S signifies surface download where "merrakey" is one of {asm,rad,flx}
+
+If new variables are desired that require bringing down files not in
+that set, this routine will need to modified to add options for them.
+
+* repackage_merra2_hourly_*.sh
+Once MERRA2 files are in-hand, the variables required need to be
+extracted, renamed, stuffed into a new, single output file and
+compressed. That is done in these routines. Like downloadFile above,
+if new variables are added to the archive, these routines need to be
+modified to deal with them.
+
+These routines require the NCO module be loaded on the cluster for
+access to ncks and ncrename and the netCDF module be loaded for nccopy
+
+* Archive structure
+THe MERRA2 hourly archive is based in the HPC filesystem at
+/asl/model/merra2 (physically based
+/umbc/xfs3/strow/asl/merra2/).
+
+Currently, the archive enjoys a continguous existence on xfs3. Should
+that need to change for future space considerations, my suggestion
+(echoing Howard's suggestions) is to break the archive down on year
+boundaries and symlink in other disk systems using a duplicate path
+structure.
+
+In other words: suppose one needs to move some merra2_hourly data to
+isilon for space reasons. Let's say one wants to move 2024, 2025, and
+the INCOMING directories from xfs3 to isilon. Build a tree on isilon
+that duplicates the /asl/models/merra2 tree to store the
+directories to move
+
+i.e. /umbc/isilon/rs/strow/asl/models/merra2/{2024,2025,INCOMING}
+
+NOTE: this may be partly mkdir and partly mv-ing directories already
+containing data
+
+Symlink these directories back into
+/asl/models/merra2/{2024,2025,INCOMING}
+
+and go about your day.
+
+The download script keys off the /asl/models/merra2/{YYYY,
+INCOMING} paths and does not require editing if the symlinks elsewhere
+in the system point to this tree.
