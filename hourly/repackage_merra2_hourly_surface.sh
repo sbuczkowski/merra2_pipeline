@@ -10,7 +10,7 @@ DAY=$3
 BASEDIR="/asl/models/merra2"
 INCOMING=$BASEDIR/INCOMING
 
-echo -e "\n**** Repackaging ${YEAR}/${MONTH}"
+echo -e "\n**** Repackaging ${YEAR}/${MONTH}/${DAY}"
 
 echo "---->Processing surface data..."
 SURFACEFILE=$INCOMING/merra2_${YEAR}${MONTH}${DAY}_surface.nc4

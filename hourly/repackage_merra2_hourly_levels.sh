@@ -11,7 +11,7 @@ BASEDIR="/asl/models/merra2"
 INCOMING=$BASEDIR/INCOMING
 
 
-echo -e "\n**** Repackaging ${YEAR}/${MONTH}"
+echo -e "\n**** Repackaging ${YEAR}/${MONTH}/${DAY}"
 LEVELSFILE=$INCOMING/merra2_${YEAR}${MONTH}${DAY}_levels.nc4
 echo "---->Processing levels data..."
 echo "---->Extracting variables..."

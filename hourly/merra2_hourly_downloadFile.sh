@@ -105,7 +105,7 @@ fi
 # credentials stored in their ~/.netrc file)
 BOILERPLATE="-nv --load-cookies ${HOME}/.urs_cookies --save-cookies ${HOME}/.urs_cookies --auth-no-challenge=on --keep-session-cookies"
 
-echo -e "\n***** Grabbing ${TYPE} ${MABBREV} files for ${YEAR}/${MONTH}"
+echo -e "\n***** Grabbing ${TYPE} ${MABBREV} files for ${YEAR}/${MONTH}/${DAY}"
 MDURL=${BASEURL}/${MCODE}/${YEAR}/${MONTH}
 MFURL=${MDURL}/MERRA2_${VERS}.${MFILE}.${YEAR}${MONTH}${DAY}.nc4
 
