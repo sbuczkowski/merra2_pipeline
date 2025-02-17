@@ -27,14 +27,20 @@ The scripts here have some HPC module dependencies:
   - Build a month of MERRA2 monthly (takes <1 minute)
     ./merra2_monthly_buildMonth.sh YYYY MM
 
+    - needs ~150MB diskspace
+
   - Build a year of MERRA2 monthly (takes <15 minutes)
     ./merra2_monthly_buildYear.sh YYYY
+
+    - needs ~2GB diskspace
 
   - Rebuild entire archive (takes a few hours)
     for year in {2002..2024}; do
       ./merra2_monthly_buildYear.sh $year
     done
     ./merra2_monthly_buildMonth.sh 2025 01
+
+    - needs ~42GB diskspace
 
 * NOTE OF SOME IMPORTANCE
 Should one want to add new variables to the archive:
